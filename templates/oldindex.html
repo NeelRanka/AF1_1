@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
+    <title>Document</title>
+
+    <style>
+        .column{
+            float: left;
+            width: 33.33%;
+        }
+        .row1:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .column2{
+            float: left;
+            width: 25%;
+        }
+        .row2:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        body{
+            background-color: #e0e0e0;
+            color: dimgrey;
+            font-family: 'Ubuntu';
+            padding-bottom: 4%;
+            padding-top: 4%;
+        }
+        input[type="checkbox"]{
+            border-radius: 8%;
+        }
+        h1{
+            font-weight: bolder;
+        }
+        h2{
+            font-weight: bold;
+        }
+        h4{
+            font-weight: bold;
+        }
+        a{
+            color: dodgerblue;
+        }
+        .card{
+            background-color: #e0e0e0;
+            margin-left: 10%;
+            margin-right: 10%;
+            border-radius: 20px;
+            border: none;
+            background: #e0e0e0;
+            box-shadow:  12px 12px 24px #969696,
+             -12px -12px 24px #ffffff;
+        }
+		.url {
+        font-size: 1.7rem;
+        text-align: center;
+        height: 40px;
+        border: none;
+        padding: 0.5rem 0.7rem;
+        border-radius: 10px;
+        background: #f3f1f1;
+        box-shadow:  3px 3px 6px #d1d1d1,
+             -3px -3px 6px #d1d1d1;
+
+      }
+      .url:focus{
+          outline: none;
+      }
+    .target-url {
+        margin: 70px auto;
+        width: 40vw;
+        text-align: center;
+      }
+
+      .target-url__form {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+    </style>
+</head>
+<body>
+    <!-- Main Domain Input -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/internalScript.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script> -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-grid.min.css') }}" >-->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+
+
+
+
+    <!--<script>
+        function renderAsCheckBoxAndLinks(links,checkedFlag) 
+        {
+            var html="";
+            // console.log("links to be rendered are : ",links)
+            for (var i = 0; i < links.length; i++) {
+                html += '<input type="checkbox" name="' + links[i] + '" value="' + links[i] + '" '+ checkedFlag +'>' + "<a href=http://" + links[i] + ">" + links[i] + "</a>" + '<br>';
+            }
+            // console.log(html)
+            return html;
+        }
+        // get the links from the server
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:5000/links');
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        //xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        //xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); 
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var links = JSON.parse(xhr.responseText);
+                var resp = xhr.response
+                //console.log(resp)
+                jsonData = JSON.parse(resp)
+                console.log(jsonData)
+                console.log(jsonData['checked'])
+                document.getElementById('links').innerHTML = renderAsCheckBoxAndLinks(jsonData['checked'],"checked");
+                document.getElementById('links').innerHTML += renderAsCheckBoxAndLinks(jsonData['unchecked'],"");
+                var wayBackUrlsbutton = "<button onclick='waybackurls()'>WayBackUrls</button>" + "<br>"
+                var portScanButton = "<button onclick='portScan()'>Scan Ports</button>" + "<br>"
+                document.getElementById('links').innerHTML += wayBackUrlsbutton + "<br>"
+                document.getElementById('links').innerHTML += portScanButton
+                document.getElementById('links').innerHTML += "<br>" + "<br>"
+            }
+            else
+            {
+                document.getElementById('links').innerHTML = "Sorry Problem with Server Connection"
+            }
+        }
+        xhr.send( JSON.stringify( { "domain": "vupune.ac.in"} ) );
+        </script> -->
+
+    <!-- main Domain Input End -->
+
+
+
+    <!-- Subdomain Part -->
+    <center><h1>Sub <span class="badge badge-secondary"><h1>Enum</h1></span></h1></center>
+    <br><br>
+    <!-- Here onwards experimenting -->
+    <!-- it ends here -->
+
+	  <div class="target-url container">
+		<div class="target-url__form">
+			<h2>Target Domain</h2>
+		  <input class="url" type="text" id="domainValue" />
+		  <div class="btn-group">
+			<button class="btn btn-outline-primary m-2" onclick="setDomain()" >Submit</button>
+			<button type="reset" class="btn btn-outline-danger m-2" >Clear</button>
+		  </div>
+		</div>
+	  </div>
+    
+    <br><br>
+
+    <div class="row1">
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <center><h2>Checked links</h2></center>
+                </div>
+                <div class="card-body">
+                    <center><a data-toggle="collapse" href="#links-block" aria-expanded="true" aria-controls="links-block">
+                    <button class="btn btn-primary" type="button">See all data</button></a></center><br>
+                    <div class="collapse" id="links-block"> 
+                        <div class="links" id="links">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Unchecked links -->
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <center><h2>Unchecked links</h2></center>
+                </div>
+                <div class="card-body">
+                    <center><a data-toggle="collapse" href="#unchecked-block" aria-expanded="true" aria-controls="unchecked-block">
+                        <button class="btn btn-primary" type="button">See all data</button></a></center><br>
+                        <div class="collapse" id="unchecked-block"> 
+                            <div class="uncheckedlinks" id="uncheckedlinks">
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <!-- HttpServerenabled  -->
+        <div class="column">
+            <div class="card">
+                <div class="card-header">
+                    <center><h2>Http Servers enabled</h2></center>
+                </div>
+                <div class="card-body">
+                    <center><a data-toggle="collapse" href="#httpserver-block" aria-expanded="true" aria-controls="httpserver-block">
+                        <button class="btn btn-primary" type="button">See all data</button></a></center><br>
+                        <div class="collapse" id="httpserver-block"> 
+	    	                <div class="httpserverenabled" id="http server enabled">
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <br><br>
+    <hr>
+    <br><br>
+    <!-- Experimenting part 2 -->
+
+    <div class="row2">
+        <div class="column2">
+            <div class="card">
+                <div class="card-header">
+                    <center><h4>Port Scanning Result</h4></center>
+                </div>
+                <div class="card-body">
+                    <center><a data-toggle="collapse" href="#portscan-block" aria-expanded="true" aria-controls="portscan-block">
+                        <button class="btn btn-primary" type="button">See all data</button></a></center>
+                        <div class="collapse" id="portscan-block"> 
+	    	                <div class="portScan" id="portScan" >
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="column2">
+            <div class="card">
+                <div class="card-header">
+                    <center><h4>JSFiles</h4></center>
+                </div>
+                <div class="card-body">
+                    <center><a data-toggle="collapse" href="#jsfiles-block" aria-expanded="true" aria-controls="jsfiles-block">
+                        <button class="btn btn-primary" type="button">See all data</button></a></center>
+                        <div class="collapse" id="jsfiles-block"> 
+	    	                <div class="jsfiles" id="JSFiles" >
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="column2">
+            <div class="card">
+                <div class="card-header">
+                    <center><h4>Subdomain Takeover</h4></center>
+                </div>
+                <div class="card-body">
+                    <center><a data-toggle="collapse" href="#subdomain-block" aria-expanded="true" aria-controls="subdomain-block">
+                        <button class="btn btn-primary" type="button">See all data</button></a></center>
+                        <div class="collapse" id="subdomain-block"> 
+	    	                <div class="subdomaintakeover" id="SubdomainTakeover" >
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="column2">
+            <div class="card">
+                <div class="card-header">
+                    <center><h4>Waybackurls</h4></center>
+                </div>
+                <div class="card-body">
+                    <center><a data-toggle="collapse" href="#wayback-block" aria-expanded="true" aria-controls="wayback-block">
+                        <button class="btn btn-primary" type="button">See all data</button></a></center>
+                        <div class="collapse" id="wayback-block"> 
+	    	                <div class="wayback" id="WayBackUrls" >
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+    <!-- Experiment part 2 ends here -->
+    <br><br>
+    <!-- javascript function to render a list of links as checkboxes -->
+        
+
+
+
+
+
+
+
+    <!-- function to get all the checked checkboxes of the div -->
+    <!--    <script>
+            function getCheckedItems(Id) 
+            {
+                console.log("invoked",Id)
+                var Items = document.getElementsByName(Id);
+                // console.log(Items)
+                var checkedItems = [];
+                // console.log(Items.length)
+                for (var i = 0; i < Items.length; i++) {
+                    if (Items[i].checked) {
+                        checkedItems.push(Items[i].value);
+                    }
+                }
+                // console.log("checked Items are : "+checkedItems)
+                return(checkedItems)
+            }
+
+            /*function sendRequest(checkedLinks)
+            {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:5000/links');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }*/
+
+            function httprobe()
+            {
+                checkedLinks = getCheckedItems( "links" )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:5000/httprobe');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        // console.log("Httprobe resp : ",resp)
+                        // console.log(jsonData['urls'])
+                        document.getElementById('http server enabled').innerHTML = "";
+                        // console.log(renderAsCheckBoxAndLinks(jsonData['urls'],"checked"))
+                        document.getElementById('http server enabled').innerHTML = renderAsCheckBoxAndLinks(jsonData['urls'],"checked");
+                        var takeSSbutton = "<button onclick='takeSS()'>Take SS</button>" + "<br>"
+                        var JSFilesbutton = "<button onclick='JSFiles()'>JSFIles</button>" + "<br>"
+                        var SDTObutton = "<button onclick='SubdomainTakeover()'>SubDomain TakeOver</button>" + "<br>"
+
+                        document.getElementById('http server enabled').innerHTML += takeSSbutton + JSFilesbutton + SDTObutton
+                    }
+                }
+                xhr.send( JSON.stringify( { "domains": checkedLinks} ) )
+            }
+
+            function tree(data) 
+            {    
+                if (typeof(data) == 'object') {
+                    document.getElementById("JSFiles").innerHTML += '<ul>';
+                    for (var i in data) {
+                        document.getElementById("JSFiles").innerHTML += '<li>' + "<a href=" + data[i] + " target='_blank' >" + data[i] + "</a>" ;
+                        tree(data[i]);
+                    }
+                    document.getElementById("JSFiles").innerHTML +='</ul>';
+                } else {
+                    // document.getElementById("JSFiles").innerHTML +=' => ' + data;
+                }
+            }
+
+            function JSFiles()
+            {
+                checkedLinks = getCheckedItems( "http server enabled" )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:5000/JSFiles');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        console.log("JSFiles : ",jsonData["Files"])
+                        document.getElementById("JSFiles").innerHTML = " <h1> JS Files </h1> "
+                        tree(jsonData["Files"])            
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+                
+            }
+
+            function portScan() 
+            {
+                checkedLinks = getCheckedItems( 'links' )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:5000/portScan');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        console.log(jsonData)
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }
+
+            function waybackurls()
+            {
+                checkedLinks = getCheckedItems( 'links' )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:5000/wayBackUrls');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        console.log(resp)
+                        console.log(jsonData['urls'])
+                        document.getElementById("WayBackUrls").innerHTML = jsonData['urls']
+
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }
+
+            function SubdomainTakeover()
+            {
+                checkedLinks = getCheckedItems( 'http server enabled' )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:5000/subDomainTakeover');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        console.log(jsonData)
+                        document.getElementById("SubdomainTakeover").innerHTML = "<br>" + "<br>"
+                        document.getElementById("SubdomainTakeover").innerHTML += jsonData['takeoverOutput']
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }
+
+            function takeSS()
+            {
+                checkedLinks = getCheckedItems("http server enabled")
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:5000/takeSS');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }
+
+            </script> -->
+
+        <center>
+        
+            <button onclick="httprobe()" class="btn btn-primary">
+                HTTPROBE
+            </button>
+            
+        </center>
+        <!-- Add the buttons for their functionality -->
+
+        <!-- Subdomain Part End -->
+
+    </body>
+</html>

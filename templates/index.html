@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
+        <title>Document</title>
+
+        <style>
+            .column{
+                float: left;
+                width: 33.33%;
+            }
+            .row1:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .column2{
+                float: left;
+                width: 25%;
+            }
+            .row2:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            body{
+                background-color: #e0e0e0;
+                color: dimgrey;
+                font-family: 'Ubuntu';
+                padding-bottom: 4%;
+                padding-top: 4%;
+            }
+            input[type="checkbox"]{
+                border-radius: 8%;
+            }
+            h1{
+                font-weight: bolder;
+            }
+            h2{
+                font-weight: bold;
+            }
+            h4{
+                font-weight: bold;
+            }
+            a{
+                color: dodgerblue;
+            }
+            .card{
+                background-color: #e0e0e0;
+                margin-left: 10%;
+                margin-right: 10%;
+                border-radius: 20px;
+                border: none;
+                background: #e0e0e0;
+                box-shadow:  12px 12px 24px #969696,
+                 -12px -12px 24px #ffffff;
+            }
+    		.url {
+            font-size: 1.7rem;
+            text-align: center;
+            height: 40px;
+            border: none;
+            padding: 0.5rem 0.7rem;
+            border-radius: 10px;
+            background: #f3f1f1;
+            box-shadow:  3px 3px 6px #d1d1d1,
+                 -3px -3px 6px #d1d1d1;
+
+          }
+          .url:focus{
+              outline: none;
+          }
+        .target-url {
+            margin: 70px auto;
+            width: 40vw;
+            text-align: center;
+          }
+
+          .target-url__form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+          }
+        </style>
+    </head>
+    <body>
+        <!-- Main Domain Input -->
+        <script type="text/javascript" src="{{ url_for('static', filename='js/internalScript.js') }}"></script>
+
+        <!-- Subdomain Part -->
+        <center><h1>Sub <span class="badge badge-secondary"><h1>Enum</h1></span></h1></center>
+        <br><br>
+        <!-- Here onwards experimenting -->
+        <!-- it ends here -->
+
+    	  <div class="target-url container">
+    		<div class="target-url__form">
+    			<h2>Target Domain</h2>
+    		  <input class="url" type="text" id="domainValue" />
+    		  <div class="btn-group">
+    			<button class="btn btn-outline-primary m-2" onclick="setDomain()" >Submit</button>
+    			<button type="reset" class="btn btn-outline-danger m-2" >Clear</button>
+    		  </div>
+    		</div>
+    	  </div>
+        
+        <br><br>
+
+        <div class="row1">
+            <div class="column">
+                <div class="card">
+                    <div class="card-header">
+                        <center><h2>Checked links</h2><h3 id="checkedLinksCount"></h3></center>
+                    </div>
+                    <div class="card-body">
+                        <center><a data-toggle="collapse" href="#links-block" aria-expanded="true" aria-controls="links-block">
+                        <button class="btn btn-primary disabled" id="checkedLinksButton" type="button">See all data</button></a></center><br>
+                        <div class="collapse" id="links-block"> 
+                            <div class="checkedlinks" id="checkedlinks">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Unchecked links -->
+            <div class="column">
+                <div class="card">
+                    <div class="card-header">
+                        <center><h2>Unchecked links</h2><h3 id="uncheckedLinksCount"></h3></center>
+                    </div>
+                    <div class="card-body">
+                        <center><a data-toggle="collapse" href="#unchecked-block" aria-expanded="true" aria-controls="unchecked-block">
+                            <button class="btn btn-primary disabled" id="uncheckedLinksButton" type="button">See all data</button></a></center><br>
+                            <div class="collapse" id="unchecked-block"> 
+                                <div class="uncheckedlinks" id="uncheckedlinks">
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <!-- HttpServerenabled  -->
+            <div class="column">
+                <div class="card">
+                    <div class="card-header">
+                        <center><h2>Http Servers enabled</h2></center>
+                    </div>
+                    <div class="card-body">
+                        <center><a data-toggle="collapse" href="#httpserver-block" aria-expanded="true" aria-controls="httpserver-block">
+                            <button class="btn btn-primary disabled" id="httpserverenabledButton" type="button">See all data</button></a></center><br>
+                            <div class="collapse" id="httpserver-block"> 
+    	    	                <div class="httpserverenabled" id="http server enabled">
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <br><br>
+        <center>
+            <button onclick="httprobe()" class="btn btn-primary" id="httprobeButton" hidden>
+                HTTPROBE
+            </button>
+        </center>
+        <!-- Experimenting part 2 -->
+
+        <div class="row2">
+            <hr>
+            <br><br>
+            <center>
+                <div class="">
+                    <div class="card">
+                        <div class="card-header">
+                            <center><h4>Options</h4></center>
+                        </div>
+                        <div class="card-body">
+                            <center>
+                                <div class="options" id="optionsBlock">
+                                    <div id="subdomainsRelated">
+                                        <input type="checkbox" value="wayBackUrls" checked="" name="optionsSelected"><b><i>WaybackURLS</i></b>
+                                        <br>
+                                        <input type="checkbox" value="portScan" checked="" name="optionsSelected"><b><i>Port Scanning</i></b>
+                                    </div>
+                                    
+                                    <br>
+                                    
+                                    <div id="httpDomainsRelated">
+                                        <!-- <input type="checkbox" value="takeSS" checked="" name="optionsSelected"><b><i>Take Screenshot</i></b>
+                                        <br>
+                                         --><input type="checkbox" value="JSFiles" checked="" name="optionsSelected"><b><i>Find JS Files</i></b>
+                                        <br>
+                                        <input type="checkbox" value="subTakeover" checked="" name="optionsSelected"><b><i>Subdomain Takeover</i></b>
+                                    </div>
+                                    <br>
+                                </div>
+                                <button class="btn btn-primary " id="attackButton" onclick="sendAttackOptions()" > Attack </button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </center>
+          </div>
+
+    </body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #WayBackUrls {
+            font-size: 50px;
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- Main Domain Input -->
+
+
+
+
+
+
+    <script>
+        url = "https://5557-152-57-236-98.ngrok.io"
+        function renderLinks(links,checkedFlag) 
+        {
+            var html="";
+            // console.log("links to be rendered are : ",links)
+            for (var i = 0; i < links.length; i++) {
+                html += '<input type="checkbox" name="' + links[i] + '" value="' + links[i] + '" '+ checkedFlag +'>' + "<a href=http://" + links[i] + ">" + links[i] + "</a>" + '<br>';
+            }
+            // console.log(html)
+            return html;
+        }
+        // get the links from the server
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url+'/links');
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        //xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        //xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); 
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var links = JSON.parse(xhr.responseText);
+                var resp = xhr.response
+                //console.log(resp)
+                jsonData = JSON.parse(resp)
+                console.log(jsonData)
+                console.log(jsonData['checked'])
+                document.getElementById('links').innerHTML = renderLinks(jsonData['checked'],"checked");
+                document.getElementById('links').innerHTML += renderLinks(jsonData['unchecked'],"");
+                var wayBackUrlsbutton = "<button onclick='waybackurls()'>WayBackUrls</button>" + "<br>"
+                document.getElementById('links').innerHTML += wayBackUrlsbutton
+                document.getElementById('links').innerHTML += "<br>" + "<br>"
+            }
+            else
+            {
+                document.getElementById('links').innerHTML = "Sorry Problem with Server Connection"
+            }
+        }
+        xhr.send( JSON.stringify( { "domain": "vupune.ac.in"} ) );
+        </script>
+
+    <!-- main Domain Input End -->
+
+
+
+    <!-- Subdomain Part -->
+    <div id="links">
+
+    </div>
+
+    <div id="http server enabled" >
+
+    </div>
+
+    <div id="JSFiles" >
+
+    </div>
+
+    <div id="SubdomainTakeover" >
+
+    </div>
+
+    <div id="WayBackUrls" >
+
+    </div>
+    <!-- javascript function to render a list of links as checkboxes -->
+        
+
+
+
+
+
+
+
+    <!-- function to get all the checked checkboxes of the div -->
+        <script>
+            function getCheckedItems(Id) 
+            {
+                console.log("invoked",Id)
+                var Items = document.getElementsByName(Id);
+                // console.log(Items)
+                var checkedItems = [];
+                // console.log(Items.length)
+                for (var i = 0; i < Items.length; i++) {
+                    if (Items[i].checked) {
+                        checkedItems.push(Items[i].value);
+                    }
+                }
+                // console.log("checked Items are : "+checkedItems)
+                return(checkedItems)
+            }
+
+            /*function sendRequest(checkedLinks)
+            {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url+'/links');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }*/
+
+            function httprobe()
+            {
+                checkedLinks = getCheckedItems( "links" )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url+'/httprobe');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        // console.log("Httprobe resp : ",resp)
+                        // console.log(jsonData['urls'])
+                        document.getElementById('http server enabled').innerHTML = "";
+                        // console.log(renderLinks(jsonData['urls'],"checked"))
+                        document.getElementById('http server enabled').innerHTML = renderLinks(jsonData['urls'],"checked");
+                        var takeSSbutton = "<button onclick='takeSS()'>Take SS</button>" + "<br>"
+                        var JSFilesbutton = "<button onclick='JSFiles()'>JSFIles</button>" + "<br>"
+                        var SDTObutton = "<button onclick='SubdomainTakeover()'>SubDomain TakeOver</button>" + "<br>"
+
+                        document.getElementById('http server enabled').innerHTML += takeSSbutton + JSFilesbutton + SDTObutton
+                    }
+                }
+                xhr.send( JSON.stringify( { "domains": checkedLinks} ) )
+            }
+
+            function tree(data) 
+            {    
+                if (typeof(data) == 'object') {
+                    document.getElementById("JSFiles").innerHTML += '<ul>';
+                    for (var i in data) {
+                        document.getElementById("JSFiles").innerHTML += '<li>' + "<a href=" + data[i] + ">" + data[i] + "</a>" ;
+                        tree(data[i]);
+                    }
+                    document.getElementById("JSFiles").innerHTML +='</ul>';
+                } else {
+                    // document.getElementById("JSFiles").innerHTML +=' => ' + data;
+                }
+            }
+
+            function JSFiles()
+            {
+                checkedLinks = getCheckedItems( "http server enabled" )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url+'/JSFiles');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        console.log("JSFiles : ",jsonData["Files"])
+                        // document.getElementById("JSFiles").innerHTML = jsonData["Files"]
+                        tree(jsonData["Files"])            
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+                
+            }
+
+            function portScan() 
+            {
+                checkedLinks = getCheckedItems( 'links' )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url+'/portScan');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }
+
+            function waybackurls()
+            {
+                checkedLinks = getCheckedItems( 'links' )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url+'/wayBackUrls');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        console.log(resp)
+                        console.log(jsonData['urls'])
+                        document.getElementById("WayBackUrls").innerHTML = jsonData['urls']
+
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }
+
+            function SubdomainTakeover()
+            {
+                checkedLinks = getCheckedItems( 'http server enabled' )
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url+'/subDomainTakeover');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                        console.log(jsonData)
+                        document.getElementById("SubdomainTakeover").innerHTML = "<br>" + "<br>"
+                        document.getElementById("SubdomainTakeover").innerHTML += jsonData['takeoverOutput']
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }
+
+            function takeSS()
+            {
+                checkedLinks = getCheckedItems("http server enabled")
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url+'/takeSS');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onload = function() 
+                {
+                    if (xhr.status === 200) {
+                        var links = JSON.parse(xhr.responseText);
+                        var resp = xhr.response
+                        //console.log(resp)
+                        jsonData = JSON.parse(resp)
+                    }
+                }
+                xhr.send( JSON.stringify( { "domain": checkedLinks} ) )
+            }
+
+            </script>
+
+            
+        <button onclick="getCheckedItems('links')">ClickMe</button>
+        
+        <button onclick="httprobe()">HTTPROBE</button>
+        <!-- Add the buttons for their functionality -->
+
+        <!-- Subdomain Part End -->
+
+    </body>
+</html>
+		
