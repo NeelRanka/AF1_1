@@ -1,5 +1,5 @@
 domain = "vupune.ac.in"
-url = "http://localhost:5000"
+url = location.protocol + "//" + location.host
 // setDomain()
 // subDomainsFinder()
 var checked = []
