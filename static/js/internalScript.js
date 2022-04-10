@@ -138,7 +138,7 @@ function httprobe()
 			document.getElementById('http server enabled').innerHTML = "";
 			// console.log(renderAsCheckBoxAndLinks(jsonData['urls'],"checked"))
 			document.getElementById('http server enabled').innerHTML = renderAsCheckBoxAndLinks(jsonData['urls'], "checked", "httpLinks");
-			
+			document.getElementById("httpServersCount").innerHTML += `(${jsonData["urls"].length})`
 			document.getElementById("httpserverenabledButton").classList.remove("disabled")
 
 			// var takeSSbutton = "<button onclick='takeSS()' class='btn btn-primary m-1'> Take SS</button>" + "<br>"
@@ -170,138 +170,138 @@ function httprobe()
 // }
 
 
-function JSFiles() 
-{
-	checkedLinks = getCheckedItems("httpLinks")
+// function JSFiles() 
+// {
+// 	checkedLinks = getCheckedItems("httpLinks")
 
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', url + '/JSFiles');
-	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	xhr.onload = function () 
-	{
-		if (xhr.status === 200) 
-		{
-			var links = JSON.parse(xhr.responseText);
-			var resp = xhr.response
-			//console.log(resp)
-			jsonData = JSON.parse(resp)
-			console.log("JSFiles : ", jsonData["Files"])
-			document.getElementById("JSFiles").innerHTML = " <h1> JS Files </h1> "
-			renderAsListOfLinks("JavaScript Files", "JSFiles", jsonData["Files"])
-		}
-	}
-	console.log("Checked Links in JS Files : ",checkedLinks);
-	xhr.send(JSON.stringify({ "domains": checkedLinks }))
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('POST', url + '/JSFiles');
+// 	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+// 	xhr.onload = function () 
+// 	{
+// 		if (xhr.status === 200) 
+// 		{
+// 			var links = JSON.parse(xhr.responseText);
+// 			var resp = xhr.response
+// 			//console.log(resp)
+// 			jsonData = JSON.parse(resp)
+// 			console.log("JSFiles : ", jsonData["Files"])
+// 			document.getElementById("JSFiles").innerHTML = " <h1> JS Files </h1> "
+// 			renderAsListOfLinks("JavaScript Files", "JSFiles", jsonData["Files"])
+// 		}
+// 	}
+// 	console.log("Checked Links in JS Files : ",checkedLinks);
+// 	xhr.send(JSON.stringify({ "domains": checkedLinks }))
 
-}
-
-
-function portScan() 
-{
-	checkedLinks = getCheckedItems('links')
-
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', url + '/portScan');
-	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	xhr.onload = function () 
-	{
-		if (xhr.status === 200) 
-		{
-			var links = JSON.parse(xhr.responseText);
-			var resp = xhr.response
-			//console.log(resp)
-			jsonData = JSON.parse(resp)
-			console.log("Port Scan : ", jsonData)
-			for (var ditem in jsonData) 
-			{
-				console.log(ditem);
-				console.log(jsonData[ditem])
-				document.getElementById("portScan").innerHTML += "<b><i>"+ditem+"<i></b>" + "<br>"
-				for (var index in jsonData[ditem])
-				{
-					console.log(jsonData[ditem][index])
-					document.getElementById("portScan").innerHTML += "&nbsp; &nbsp; &nbsp;" + jsonData[ditem][index] + "<br>"
-				}
-				document.getElementById("portScan").innerHTML += "<br><br>" 
-			}
-		}
-	}
-	xhr.send(JSON.stringify({ "domains": checkedLinks }))
-}
+// }
 
 
-function waybackurls() 
-{
-	checkedLinks = getCheckedItems('checkedlinks')
-	console.log("waybackurls checked Links ", checkedLinks)
-	// return;
+// function portScan() 
+// {
+// 	checkedLinks = getCheckedItems('links')
 
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', url + '/wayBackUrls');
-	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	xhr.onload = function () 
-	{
-		if (xhr.status === 200) 
-		{
-			var links = JSON.parse(xhr.responseText);
-			var resp = xhr.response
-			//console.log(resp)
-			jsonData = JSON.parse(resp)
-			console.log(resp)
-			console.log(jsonData['urls'])
-			document.getElementById("WayBackUrls").innerHTML = jsonData['urls']
-			document.getElementById("WayBackUrls").innerHTML = "<h1>WayBackUrls</h1>"
-			renderAsListOfLinks("WayBackUrls", "WayBackUrls", jsonData['urls'])
-
-		}
-	}
-	xhr.send(JSON.stringify({ "domain": domain }))
-}
-
-
-function SubdomainTakeover() 
-{
-	checkedLinks = getCheckedItems('http server enabled')
-
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', url + '/subDomainTakeover');
-	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	xhr.onload = function () 
-	{
-		if (xhr.status === 200) 
-		{
-			var links = JSON.parse(xhr.responseText);
-			var resp = xhr.response
-			//console.log(resp)
-			jsonData = JSON.parse(resp)
-			console.log(jsonData)
-			document.getElementById("SubdomainTakeover").innerHTML = "<h1>Sub-Domain Takeover</h1>"
-			renderAsListOfLinks("Sub-Domain Takeover", "SubdomainTakeover", jsonData['takeoverOutput'])
-		}
-	}
-	xhr.send(JSON.stringify({ "domain": checkedLinks }))
-}
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('POST', url + '/portScan');
+// 	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+// 	xhr.onload = function () 
+// 	{
+// 		if (xhr.status === 200) 
+// 		{
+// 			var links = JSON.parse(xhr.responseText);
+// 			var resp = xhr.response
+// 			//console.log(resp)
+// 			jsonData = JSON.parse(resp)
+// 			console.log("Port Scan : ", jsonData)
+// 			for (var ditem in jsonData) 
+// 			{
+// 				console.log(ditem);
+// 				console.log(jsonData[ditem])
+// 				document.getElementById("portScan").innerHTML += "<b><i>"+ditem+"<i></b>" + "<br>"
+// 				for (var index in jsonData[ditem])
+// 				{
+// 					console.log(jsonData[ditem][index])
+// 					document.getElementById("portScan").innerHTML += "&nbsp; &nbsp; &nbsp;" + jsonData[ditem][index] + "<br>"
+// 				}
+// 				document.getElementById("portScan").innerHTML += "<br><br>" 
+// 			}
+// 		}
+// 	}
+// 	xhr.send(JSON.stringify({ "domains": checkedLinks }))
+// }
 
 
-function takeSS() 
-{
-	checkedLinks = getCheckedItems("http server enabled")
+// function waybackurls() 
+// {
+// 	checkedLinks = getCheckedItems('checkedlinks')
+// 	console.log("waybackurls checked Links ", checkedLinks)
+// 	// return;
 
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', url + '/takeSS');
-	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	xhr.onload = function () 
-	{
-		if (xhr.status === 200) 
-		{
-			var links = JSON.parse(xhr.responseText);
-			var resp = xhr.response
-			//console.log(resp)
-			jsonData = JSON.parse(resp)
-		}
-	}
-	xhr.send(JSON.stringify({ "domain": checkedLinks }))
-}
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('POST', url + '/wayBackUrls');
+// 	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+// 	xhr.onload = function () 
+// 	{
+// 		if (xhr.status === 200) 
+// 		{
+// 			var links = JSON.parse(xhr.responseText);
+// 			var resp = xhr.response
+// 			//console.log(resp)
+// 			jsonData = JSON.parse(resp)
+// 			console.log(resp)
+// 			console.log(jsonData['urls'])
+// 			document.getElementById("WayBackUrls").innerHTML = jsonData['urls']
+// 			document.getElementById("WayBackUrls").innerHTML = "<h1>WayBackUrls</h1>"
+// 			renderAsListOfLinks("WayBackUrls", "WayBackUrls", jsonData['urls'])
+
+// 		}
+// 	}
+// 	xhr.send(JSON.stringify({ "domain": domain }))
+// }
+
+
+// function SubdomainTakeover() 
+// {
+// 	checkedLinks = getCheckedItems('http server enabled')
+
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('POST', url + '/subDomainTakeover');
+// 	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+// 	xhr.onload = function () 
+// 	{
+// 		if (xhr.status === 200) 
+// 		{
+// 			var links = JSON.parse(xhr.responseText);
+// 			var resp = xhr.response
+// 			//console.log(resp)
+// 			jsonData = JSON.parse(resp)
+// 			console.log(jsonData)
+// 			document.getElementById("SubdomainTakeover").innerHTML = "<h1>Sub-Domain Takeover</h1>"
+// 			renderAsListOfLinks("Sub-Domain Takeover", "SubdomainTakeover", jsonData['takeoverOutput'])
+// 		}
+// 	}
+// 	xhr.send(JSON.stringify({ "domain": checkedLinks }))
+// }
+
+
+// function takeSS() 
+// {
+// 	checkedLinks = getCheckedItems("http server enabled")
+
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('POST', url + '/takeSS');
+// 	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+// 	xhr.onload = function () 
+// 	{
+// 		if (xhr.status === 200) 
+// 		{
+// 			var links = JSON.parse(xhr.responseText);
+// 			var resp = xhr.response
+// 			//console.log(resp)
+// 			jsonData = JSON.parse(resp)
+// 		}
+// 	}
+// 	xhr.send(JSON.stringify({ "domain": checkedLinks }))
+// }
 
 // write a function to render JSON data in HTML div tags as list of strings
 
@@ -312,7 +312,7 @@ function sendAttackOptions()
 	checkedHttpDomains = getCheckedItems("httpLinks")
 	checkedOptions = getCheckedItems("optionsSelected")
 	
-	document.getElementById("attackButton").classList.add("disabled")
+	// document.getElementById("attackButton").classList.add("disabled")
 	
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', url + '/Attack');
@@ -321,20 +321,6 @@ function sendAttackOptions()
 	{
 		if (xhr.status === 200) 
 		{
-			// var links = JSON.parse(xhr.responseText);
-			// var resp = xhr.response
-			// //console.log(resp)
-			// jsonData = JSON.parse(resp)
-			// document.getElementById('http server enabled').innerHTML = "";
-			// document.getElementById('http server enabled').innerHTML = renderAsCheckBoxAndLinks(jsonData['urls'], "checked", "httpLinks");
-			
-			// document.getElementById("httpserverenabledButton").classList.remove("disabled")
-
-			// // var takeSSbutton = "<button onclick='takeSS()' class='btn btn-primary m-1'> Take SS</button>" + "<br>"
-			// // var JSFilesbutton = "<button onclick='JSFiles()' class='btn btn-primary m-1'> JSFIles</button>" + "<br>"
-			// // var SDTObutton = "<button onclick='SubdomainTakeover()' class='btn btn-primary m-1'> SubDomain TakeOver</button>" + "<br>"
-
-			// document.getElementById('http server enabled').innerHTML += takeSSbutton + JSFilesbutton + SDTObutton
 			console.log("request successfully sent")
 			console.log(xhr.responseText)
 			jsonData = JSON.parse(xhr.response)
@@ -342,7 +328,7 @@ function sendAttackOptions()
 			{
 				alert(`attack on the domain ${jsonData['data']} was completed successfully`)
 			}
-			document.getElementById("attackButton").classList.remove("disabled")
+			// document.getElementById("attackButton").classList.remove("disabled")
 		}
 		else if (xhr.status == 400)
 		{
@@ -353,5 +339,5 @@ function sendAttackOptions()
 	}
 	console.log(checkedLinks)
 	xhr.send(JSON.stringify({ "domain":domain ,"subDomains": checkdSubDomains, "httpDomains":checkedHttpDomains, "options":checkedOptions }))	
-
+	alert(`attack for the domain ${domain} was successfully started ,visit /results for checking attack progress and can download the complete zip from there once finished`)
 }
