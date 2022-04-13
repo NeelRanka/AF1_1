@@ -90,18 +90,20 @@
             flex-direction: column;
             gap: 2rem;
           }
-          div.b {
-              position: absolute;
-              right: -30px;
-              width: 150px;
-              height: 120px;
-            } 
+          .watermark{
+            /*position: fixed;     */
+            text-align: right;    
+            top: 0px; 
+            width: 100%;
+         } 
         </style>
     </head>
     <body>
         <!-- Main Domain Input -->
         <script type="text/javascript" src="{{ url_for('static', filename='js/internalScript.js') }}"></script>
-
+        <div class="watermark">
+            <h6><i>designed by Neev Shirke</i></h6> 
+        </div>
         <!-- Subdomain Part -->
         <center>
             <h1>
