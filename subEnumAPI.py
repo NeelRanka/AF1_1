@@ -160,7 +160,7 @@ def detectWAF(httpDomainsFile,basePath):
 	op = os.popen(command).read()
 
 
-def filterWayback(basePath,filaname):
+def filterWayback(basePath,filename):
 	print("making filtered outputs of waybackURLS")
 	command = "./Tools/waybackFilter.sh '{}' '{}'".format(basePath,filename)
 	print(command)
