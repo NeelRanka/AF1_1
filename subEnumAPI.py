@@ -153,8 +153,28 @@ def findSubdomains(domain):
 		subdomains = f.read().split("\n")
 	return(subdomains)
 
+def detectWAF(httpDomainsFile,basePath):
+	print("detecting WAF using wafw00f")
+	command = "wafw00f -i " + httpDomains + " -o " + basePath + "wafDetails.txt"
+	print(command)
+	op = os.popen(command).read()
 
 
+def filterWayback(basePath,filaname):
+	print("making filtered outputs of waybackURLS")
+	command = "./Tools/waybackFilter.sh '{}' '{}'".format(basePath,filename)
+	print(command)
+	op = os.popen(command).read()
+
+
+#
+def SecretFinder(basePath,filename):
+	print("Running Secret Finder on JS Files")
+	JSfiles = open(basePath+filename).read().split("\n")
+	mainCommand = "./Tools/SecretFinder/SecretFinder.py -i '{}' -o cli >> '{}JSFinder.txt'"
+	for file in JSfiles:
+		command = mainCommand.format(file,basePath)
+		op = os.popen(command).read()
 
 
 
@@ -164,6 +184,9 @@ def completeProcess(domain=None,todo=None,subDomains=None,httpDomains=None):
 	if domain!=None:
 		if "wayBackUrls" in todo:
 			waybackurls(domain,basePath)
+			filterWayback(basePath,"waybackurls.txt")
+		#perform GF-patterns on waybackURLS output
+
 	if todo != None:
 		if subDomains != None:
 			subDomainsFile = createFile(subDomains,basePath,"subDomains.txt")
@@ -174,10 +197,12 @@ def completeProcess(domain=None,todo=None,subDomains=None,httpDomains=None):
 			httpDomainsFile = createFile(httpDomains,basePath,"httpDomains.txt")  #returns the filename having only domains with http server running
 			if "JSFiles" in todo:
 				findJSFiles(httpDomainsFile,basePath)
+				SecretFinder(basePath,"JSfiles.txt")
 			if "subTakeover" in todo:
 				checkSubTakeover(httpDomainsFile,basePath)
-			# if "takeSS" in todo:
-			# 	takeSS(httpDomainsFile,basePath)
+			if "wafDetect" in todo:
+				print("trying WAF detection")
+				# detectWAF(httpDomainsFile,basePath)
 	
 	#now zip the particular folder and send it to the user
 	zipFolder(basePath,domain)

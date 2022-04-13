@@ -90,6 +90,12 @@
             flex-direction: column;
             gap: 2rem;
           }
+          div.b {
+              position: absolute;
+              right: -30px;
+              width: 150px;
+              height: 120px;
+            } 
         </style>
     </head>
     <body>
@@ -97,12 +103,18 @@
         <script type="text/javascript" src="{{ url_for('static', filename='js/internalScript.js') }}"></script>
 
         <!-- Subdomain Part -->
-        <center><h1>Sub <span class="badge badge-secondary"><h1>Enum</h1></span></h1></center>
-        <br><br>
-        <!-- Here onwards experimenting -->
-        <!-- it ends here -->
-
-    	  <div class="target-url container">
+        <center>
+            <h1>
+                Sub 
+                <span class="badge badge-secondary">
+                    <h1>
+                        Enum
+                    </h1>
+                </span>
+            </h1>
+        </center>
+        
+          <div class="target-url container">
     		<div class="target-url__form">
     			<h2>Target Domain</h2>
     		  <input class="url" type="text" id="domainValue" />
@@ -113,9 +125,13 @@
     		</div>
     	  </div>
         
-        <br><br>
-
         <div class="row1">
+        <center>
+            <button onclick="httprobe()" class="btn btn-primary" id="httprobeButton" hidden>
+                HTTPROBE
+            </button>
+        <br><br>
+        </center>
             <div class="column">
                 <div class="card">
                     <div class="card-header">
@@ -166,12 +182,6 @@
                 </div>
             </div> 
         </div>
-        <br><br>
-        <center>
-            <button onclick="httprobe()" class="btn btn-primary" id="httprobeButton" hidden>
-                HTTPROBE
-            </button>
-        </center>
         <!-- Experimenting part 2 -->
 
         <div class="row2">
@@ -197,9 +207,12 @@
                                     <div id="httpDomainsRelated">
                                         <!-- <input type="checkbox" value="takeSS" checked="" name="optionsSelected"><b><i>Take Screenshot</i></b>
                                         <br>
-                                         --><input type="checkbox" value="JSFiles" checked="" name="optionsSelected"><b><i>Find JS Files</i></b>
+                                         -->
+                                         <input type="checkbox" value="JSFiles" checked="" name="optionsSelected"><b><i>Find JS Files</i></b>
                                         <br>
-                                        <input type="checkbox" value="subTakeover" checked="" name="optionsSelected"><b><i>Subdomain Takeover</i></b>
+                                        <input type="checkbox" value="subTakeover" checked="" name="optionsSelected"><b><i>Subdomain Takeover</i></b><br>
+                                        <input type="checkbox" value="wafDetect" checked="" name="optionsSelected"><b><i>WAF Detect</i></b>
+                                        <br>
                                     </div>
                                     <br>
                                 </div>
