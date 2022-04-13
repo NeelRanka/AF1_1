@@ -173,9 +173,9 @@ def SecretFinder(basePath,filename):
 	print("Running Secret Finder on JS Files")
 	JSfiles = open(basePath+filename).read().split("\n")
 	mainCommand = "python3 ./Tools/SecretFinder/SecretFinder.py -i '{}' -o cli >> '{}JSFinder.txt'"
-	for file in JSfiles:
-		if file.isalnum():
-			command = mainCommand.format(file,basePath)
+	for url in JSfiles:
+		if url != "" :
+			command = mainCommand.format(url,basePath)
 			print(command)
 			op = os.popen(command).read()
 
