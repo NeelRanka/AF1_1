@@ -155,14 +155,15 @@ def findSubdomains(domain):
 
 def detectWAF(httpDomainsFile,basePath):
 	print("detecting WAF using wafw00f")
-	command = "wafw00f -i " + httpDomains + " -o " + basePath + "wafDetails.txt"
+	command = "wafw00f -i '{}' -o '{}wafDetails.txt' ".format(httpDomainsFile,basePath)
+	# command = "wafw00f -i " + httpDomains + " -o " + basePath + "wafDetails.txt"
 	print(command)
 	op = os.popen(command).read()
 
 
 def filterWayback(basePath,filename):
 	print("making filtered outputs of waybackURLS")
-	command = "./Tools/waybackFilter.sh '{}' '{}'".format(basePath,filename)
+	command = "bash ./Tools/waybackFilter.sh '{}' '{}'".format(basePath,filename)
 	print(command)
 	op = os.popen(command).read()
 
@@ -171,10 +172,11 @@ def filterWayback(basePath,filename):
 def SecretFinder(basePath,filename):
 	print("Running Secret Finder on JS Files")
 	JSfiles = open(basePath+filename).read().split("\n")
-	mainCommand = "./Tools/SecretFinder/SecretFinder.py -i '{}' -o cli >> '{}JSFinder.txt'"
+	mainCommand = "python3 ./Tools/SecretFinder/SecretFinder.py -i '{}' -o cli >> '{}JSFinder.txt'"
 	for file in JSfiles:
-		command = mainCommand.format(file,basePath)
-		op = os.popen(command).read()
+		if file.isalnum():
+			command = mainCommand.format(file,basePath)
+			op = os.popen(command).read()
 
 
 
