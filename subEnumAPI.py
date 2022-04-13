@@ -202,7 +202,7 @@ def completeProcess(domain=None,todo=None,subDomains=None,httpDomains=None):
 				checkSubTakeover(httpDomainsFile,basePath)
 			if "wafDetect" in todo:
 				print("trying WAF detection")
-				# detectWAF(httpDomainsFile,basePath)
+				detectWAF(httpDomainsFile,basePath)
 	
 	#now zip the particular folder and send it to the user
 	zipFolder(basePath,domain)
