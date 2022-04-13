@@ -176,6 +176,7 @@ def SecretFinder(basePath,filename):
 	for file in JSfiles:
 		if file.isalnum():
 			command = mainCommand.format(file,basePath)
+			print(command)
 			op = os.popen(command).read()
 
 
