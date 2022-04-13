@@ -10,7 +10,7 @@ from AF1_1.subEnumAPI import *
 @app.route("/", methods=['GET'])
 def landing():
 	print("remote IP addr : ",request.remote_addr,request.origin,request.referrer)
-	return("<h1>Neel's Landing Page</h1>")
+	return("<h1>check '/Attack' page for Info Gathering<br>check '/results' page for results of those atacks<br></h1>")
 
 
 @app.route("/new/",methods=["GET"])
