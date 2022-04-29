@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<link
+			href="https://fonts.googleapis.com/css?family=Ubuntu"
+			rel="stylesheet"
+		/>
+		<title>Document</title>
+
+		<style>
+			/* Changes made starting here */
+
+			/* .column{
+                float: left;
+                width: 33.33%;
+            }
+            .row1:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .column2{
+                float: left;
+                width: 25%;
+            }
+            .row2:after {
+                content: "";
+                display: table;
+                clear: both;
+            } */
+
+			.loader {
+				position: absolute;
+				left: 49%;
+				top: 60%;
+				z-index: 1;
+				width: 40px;
+				height: 40px;
+				border: 5px solid #f3f3f3;
+				border-radius: 50%;
+				border-top: 5px solid #3498db;
+				-webkit-animation: spin 2s linear infinite;
+				animation: spin 2s linear infinite;
+			}
+
+			@-webkit-keyframes spin {
+				0% {
+					-webkit-transform: rotate(0deg);
+				}
+				100% {
+					-webkit-transform: rotate(360deg);
+				}
+			}
+
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+
+			.animate-bottom {
+				position: relative;
+				-webkit-animation-name: animatebottom;
+				-webkit-animation-duration: 1s;
+				animation-name: animatebottom;
+				animation-duration: 1s;
+			}
+
+			@-webkit-keyframes animatebottom {
+				from {
+					bottom: -100px;
+					opacity: 0;
+				}
+				to {
+					bottom: 0px;
+					opacity: 1;
+				}
+			}
+
+			@keyframes animatebottom {
+				from {
+					bottom: -100px;
+					opacity: 0;
+				}
+				to {
+					bottom: 0;
+					opacity: 1;
+				}
+			}
+
+			#content {
+				display: none;
+				text-align: left;
+			}
+
+			/* Changes made till here in CSS */
+
+			body {
+				background-color: #e0e0e0;
+				color: dimgrey;
+				font-family: "Ubuntu";
+				padding: 4%;
+			}
+			input[type="checkbox"] {
+				border-radius: 8%;
+			}
+			h1 {
+				font-weight: bolder;
+			}
+			h2 {
+				font-weight: bold;
+			}
+			h4 {
+				font-weight: bold;
+			}
+			a {
+				color: dodgerblue;
+			}
+			.card {
+				background-color: #e0e0e0;
+				margin-left: 10%;
+				margin-right: 10%;
+				border-radius: 20px;
+				border: none;
+				background: #e0e0e0;
+				box-shadow: 12px 12px 24px #969696, -12px -12px 24px #ffffff;
+			}
+			.url {
+				font-size: 1.7rem;
+				text-align: center;
+				height: 40px;
+				border: none;
+				padding: 0.5rem 0.7rem;
+				border-radius: 10px;
+				background: #f3f1f1;
+				box-shadow: 3px 3px 6px #d1d1d1, -3px -3px 6px #d1d1d1;
+			}
+			.url:focus {
+				outline: none;
+			}
+			.target-url {
+				/* margin: 70px auto; */
+				width: 40vw;
+				text-align: center;
+			}
+
+			.target-url__form {
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+			}
+			.watermark {
+				/*position: fixed;     */
+				text-align: right;
+				top: 0px;
+				width: 100%;
+			}
+			.blur{
+				filter: blur(3px);
+  				-webkit-filter: blur(3px);
+			}
+		</style>
+	</head>
+	<body style="margin: 0">
+		<!-- Main Domain Input -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/internalScript.js') }}" ></script>
+		<div class="watermark">
+			<h6><i>designed by Neev Shirke</i></h6>
+		</div>
+		<!-- Subdomain Part -->
+		<center>
+			<h1>
+				Sub
+				<span class="badge badge-secondary">
+					<h1>Enum</h1>
+				</span>
+			</h1>
+		</center>
+
+		<div class="target-url container">
+			<div class="target-url__form">
+				<h2>Target Domain</h2>
+				<input class="url" type="text" id="domainValue" placeholder="Enter a domain eg: 'example.com'"/>
+				<div class="btn-group">
+					<button class="btn btn-outline-primary m-2" onclick="setDomain()" >
+						Submit
+					</button>
+					<button type="reset" class="btn btn-outline-danger m-2">
+						Clear
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="mainLoader" class="m-3" hidden>
+			<center>
+				<h4>Finding Subdomains</h4>
+				<div class="loader"></div>
+			</center>
+		</div>
+
+		<div class="row1 animate-bottom" style="display: none" id="content">
+			<!-- <div style="display:none;" id="content" class="animate-bottom"> -->
+			<center>
+				<button onclick="httprobe()" class="btn btn-primary m-1" id="httprobeButton" hidden>
+					Find Http Servers
+				</button>
+				<br /><br />
+			</center>
+			<div class="card-deck">
+				<div class="card">
+					<div class="card-header">
+						<center>
+							<h2>SubDomains</h2>
+							<h3 id="checkedLinksCount"></h3>
+						</center>
+					</div>
+					<div class="card-body">
+						<center>
+							<div class="checkedlinks" id="checkedlinks"></div>
+						</center>
+					</div>
+				</div>
+				<!-- </div> -->
+				<!-- Unchecked links -->
+				<div class="card">
+					<div class="card-header">
+						<center>
+							<h2>Related Domains</h2>
+							<h3 id="uncheckedLinksCount"></h3>
+						</center>
+					</div>
+					<div class="card-body">
+						<center>
+							<div class="uncheckedlinks" id="uncheckedlinks" ></div>
+						</center>
+					</div>
+				</div>
+				<!-- </div> -->
+				<!-- HttpServerenabled  -->
+				<div class="card blur" id="httpServer">
+					<div class="card-header">
+						<center>
+							<h2>Http Servers enabled</h2>
+							<h3 id="httpServersCount"></h3>
+						</center>
+					</div>
+					<div class="card-body">
+						<center>
+							<div class="loader" id="httpServerLoader" hidden></div>
+							<div class="httpserverenabled" id="http server enabled" ></div>
+						</center>
+					</div>
+				</div>
+				<!-- </div>  -->
+			</div>
+		</div>
+		<!-- </div> -->
+		<!-- Experimenting part 2 -->
+
+		<div class="row2" id="row2" class="animate-bottom" style="display: none" >
+			<hr />
+			<br /><br />
+			<center>
+				<div class="">
+					<div class="card">
+						<div class="card-header">
+							<center><h4>Options</h4></center>
+						</div>
+						<div class="card-body">
+							<center>
+								<div class="options" id="optionsBlock">
+									<div id="subdomainsRelated" class="animate-bottom" style="display: none">
+										<input type="checkbox" value="wayBackUrls" checked="" name="optionsSelected" /><b><i>WaybackURLS</i></b >(will also filter info for categorization)
+										<br />
+										<input type="checkbox" value="portScan" checked="" name="optionsSelected" /><b><i>Port Scanning</i></b>
+									</div>
+
+									<br />
+
+									<div id="httpDomainsRelated" class="animate-bottom" style="display: none" >
+										<!-- <input type="checkbox" value="takeSS" checked="" name="optionsSelected"><b><i>Take Screenshot</i></b>
+                                        <br>
+                                         -->
+										<input type="checkbox" value="JSFiles" checked="" name="optionsSelected" /><b><i>Find JS Files</i></b >(also analyzes files for hidden keys etc.)
+										<br />
+										<input type="checkbox" value="subTakeover" checked="" name="optionsSelected" /><b><i>Subdomain Takeover</i></b
+										><br />
+										<input type="checkbox" value="wafDetect" checked="" name="optionsSelected" /><b><i>WAF Detect</i></b>
+										<br />
+									</div>
+									<br />
+								</div>
+								<button	class="btn btn-primary"	id="attackButton" onclick="sendAttackOptions()">
+									Attack
+								</button>
+							</center>
+						</div>
+					</div>
+				</div>
+			</center>
+		</div>
+
+
+	</body>
+</html>

@@ -93,6 +93,16 @@ def findJSFiles(httpDomainsFile,basePath):  #fileloc is the baseDir
 	print("now you can search manually/via a program for the JS files listed in the "+basePath+"JSfiles.txt file")
 
 
+def SecretFinder(basePath,filename):
+	print("Running Secret Finder on JS Files")
+	JSfiles = open(basePath+filename).read().split("\n")
+	mainCommand = "python3 ./Tools/SecretFinder/SecretFinder.py -i '{}' -o cli >> '{}JSFinder.txt'"
+	for url in JSfiles:
+		if url != "" :
+			command = mainCommand.format(url,basePath)
+			print(command)
+			op = os.popen(command).read()
+
 #---------------------------------------------------------------------------------------
 
 
@@ -144,14 +154,23 @@ def waybackurls(domain,basePath):
 	op = os.popen(command).read()
 
 
-def findSubdomains(domain):
-	#have written to the file subDomains.txt
-	subfinder(domain)
-	assetfinder(domain)
-	# return the contents of the file fileloc+"subDomains.txt"
-	with open(fileloc+"subDomains.txt") as f:
-		subdomains = f.read().split("\n")
-	return(subdomains)
+def filterWayback(basePath,filename):
+	print("making filtered outputs of waybackURLS")
+	command = "bash ./Tools/waybackFilter.sh '{}' '{}'".format(basePath,filename)
+	print(command)
+	op = os.popen(command).read()
+#---------------------------------------------------------------------------------------
+
+
+# def findSubdomains(domain):
+# 	#have written to the file subDomains.txt
+# 	subfinder(domain)
+# 	assetfinder(domain)
+# 	# return the contents of the file fileloc+"subDomains.txt"
+# 	with open(fileloc+"subDomains.txt") as f:
+# 		subdomains = f.read().split("\n")
+	# return(subdomains)
+
 
 def detectWAF(httpDomainsFile,basePath):
 	print("detecting WAF using wafw00f")
@@ -161,24 +180,18 @@ def detectWAF(httpDomainsFile,basePath):
 	op = os.popen(command).read()
 
 
-def filterWayback(basePath,filename):
-	print("making filtered outputs of waybackURLS")
-	command = "bash ./Tools/waybackFilter.sh '{}' '{}'".format(basePath,filename)
-	print(command)
-	op = os.popen(command).read()
+
+def detectTechnologies(httpDomainsFile,basePath):
+	#make a cURL request or run webanalyse tool on the domain one by one and store their output
+	makeDir = os.popen("mkdir -p '{}technologies/'".format(basePath))
+	cmd = "wappalyzer '{}' --pretty > '{}technologies/{}.json'"
+	for httpDomain in open(httpDomainsFile):
+		command = cmd.format(httpDomain,basePath,"_".join( httpDomain.strip("\n").split("/") ))
+		print(command)
+		op = os.popen(command).read()
 
 
-#
-def SecretFinder(basePath,filename):
-	print("Running Secret Finder on JS Files")
-	JSfiles = open(basePath+filename).read().split("\n")
-	mainCommand = "python3 ./Tools/SecretFinder/SecretFinder.py -i '{}' -o cli >> '{}JSFinder.txt'"
-	for url in JSfiles:
-		if url != "" :
-			command = mainCommand.format(url,basePath)
-			print(command)
-			op = os.popen(command).read()
-
+#-----------------------------------------------------------------------------------------------------
 
 
 #store the domains to be further processed in a file and pass that file path to findHttpDomains
@@ -206,6 +219,10 @@ def completeProcess(domain=None,todo=None,subDomains=None,httpDomains=None):
 			if "wafDetect" in todo:
 				print("trying WAF detection")
 				detectWAF(httpDomainsFile,basePath)
+			if "detectTechnology" in todo:
+				print("trying technology detection")
+				detectTechnologies(httpDomainsFile,basePath)
+
 	
 	#now zip the particular folder and send it to the user
 	zipFolder(basePath,domain)

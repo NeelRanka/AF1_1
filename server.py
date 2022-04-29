@@ -38,7 +38,7 @@ def links():
 
 @app.route("/Attack",methods=['GET'])
 def HTML():
-	return( render_template("index.html") )
+	return( render_template("indexMain.html") )
 
 
 @app.route("/Attack",methods=["POST"])
