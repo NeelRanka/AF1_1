@@ -10,7 +10,7 @@ from AF1_1.subEnumAPI import *
 @app.route("/", methods=['GET'])
 def landing():
 	print("remote IP addr : ",request.remote_addr,request.origin,request.referrer)
-	return("<h1>check '/Attack' page for Info Gathering<br>check '/results' page for results of those atacks<br></h1>")
+	return("""<h1>check '<a href="/Attack">/Attack</a>' page for Info Gathering<br>check '<a href="/results/">/results/</a>' page for results of those atacks<br></h1>""")
 
 
 @app.route("/new/",methods=["GET"])
@@ -19,21 +19,6 @@ def newPage():
 	par = dict(request.args)
 	return(par['x'])
 	return("OK")
-
-
-@app.route("/links",methods=["GET","POST"])
-def links():
-	print("in links")
-	checked=[
-	"vupune.ac.in",
-	"erp.vupune.ac.in",
-	"google.com"
-	]
-	unchecked=['neel.com']
-	print(request.form)
-	print(request.json)
-	return(jsonify({"checked":checked,"unchecked":unchecked}))
-
 
 
 @app.route("/Attack",methods=['GET'])

@@ -3,64 +3,23 @@ import subprocess
 import os
 import sys
 
-"""
-try:
-	domain = sys.argv[1]
-	#print("domain : ",domain)
-except:
-	if len(sys.argv) < 2:
-		print("No Domain Entered ")
-		print("USAGE : python3 subEnum.py <domain>")
-		exit(0)
-	print(sys.argv)
-	exit()
+OSallowed = {
+			'0': 1, '1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1, '9': 1,
+			'a': 1, 'b': 1, 'c': 1, 'd': 1, 'e': 1, 'f': 1, 'g': 1, 'h': 1, 'i': 1, 'j': 1,
+			'k': 1, 'l': 1, 'm': 1, 'n': 1, 'o': 1, 'p': 1, 'q': 1, 'r': 1, 's': 1, 't': 1,
+			'u': 1, 'v': 1, 'w': 1, 'x': 1, 'y': 1, 'z': 1, 'A': 1, 'B': 1, 'C': 1, 'D': 1,
+			'E': 1, 'F': 1, 'G': 1, 'H': 1, 'I': 1, 'J': 1, 'K': 1, 'L': 1, 'M': 1, 'N': 1,
+			'O': 1, 'P': 1, 'Q': 1, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 1, 'W': 1, 'X': 1,
+			'Y': 1, 'Z': 1, '-': 1, '.': 1, '_': 1, ':': 1, "/": 1
+			}
 
-#check if valid domain
-
-filepath = "/home/neel/hacking/Websites/"
-dirname = domain.split(".")[0].lower()
-filename =  dirname + ".txt"
-httpDomainsFile=""
-
-
-if not os.path.exists(filepath+dirname):
-	os.mkdir(filepath+dirname)
-	print(f"Created the directory {filepath+dirname}")
-	fileloc = filepath+dirname+"/"   #shows the directory
-	# print(fileloc)
-else:
-	fileloc = filepath+dirname+"/"
-"""
-
-basePath = "/home/neel/hacking"
-# print(basePath)
-
-def sublist3r():
-	print("Running Sublist3r")
-	print("-------------------")
-	command = "python3 "+basePath+"/Sublist3r/sublist3r.py -d "+domain+" -o " + fileloc + filename 
-	#sublist3r = os.popen(command).read()
-	#print(sublist3r)
-
-
-"""
-def KnockPy():              ===> Needs to be processed IP + domains and all
-	print("Running KnockPy")
-	os.chdir(basePath+"/KnockPy")   #changing the current working directory
-
-	#print(os.popen("ls").read())
-	command = "python knock.py "+domain +" | tee -a "+basePath+"/"+fileloc+filename
-	print(command)
-	knockPy = os.popen(command).read()
-	os.chdir(basePath)
-"""
 
 
 #OK
 def subfinder(domain):
 	# print("\n\nRunning Subfinder")
 	# print("---------------------")
-	command = "subfinder --silent -d "+ domain        #--silent flag to only show the subdomains as the output
+	command = "subfinder --silent -d '{}'".format(domain)        #--silent flag to only show the subdomains as the output
 	subfinder = os.popen(command).read()            # simply append the to the previous output, no processing required 
 	# input("\npython3 subfinder output : \n"+subfinder+"\n-----------------------------------------")
 	return(subfinder.split())
@@ -69,7 +28,7 @@ def subfinder(domain):
 def assetfinder(domain):
 	# print("\n\nRunning AssetFinder")
 	# print("-----------------------")
-	command = "assetfinder " + domain
+	command = "assetfinder '{}'".format(domain)
 	assetfinder = os.popen(command).read()          # simply append the to the previous output, no processing required
 	# input("python3 Assetfinder output \n"+assetfinder+"\n-------------------------------------")
 	return(assetfinder.split())
@@ -112,20 +71,22 @@ def httprobe(domains):
 	print("domainsList : ",domains)
 	# domains is a list of domains and subdomains to be tested via httprobe 
 	command = 'printf "' + "\n".join(domains) + '" | httprobe '
+	command = "printf '{}' | httprobe ".format( escapeOSCI("\n".join(domains), ['\n']) )
+	
 	print(command)
 	op = os.popen(command).read()
 	# print(op.split())
 	return(op.split())
 
 
-def takeSS(domains):
-	print("Taking SS of websites")
-	print("---------------------")
-	command = "python3 webscreenshot.py -i " + httpDomainsFile + " -o " + fileloc + "images/"
-	#input(command)
-	os.chdir(basePath+"/webscreenshot")
-	SS = os.popen(command).read()
-	os.chdir(basePath)
+# def takeSS(domains):
+# 	print("Taking SS of websites")
+# 	print("---------------------")
+# 	command = "python3 webscreenshot.py -i " + httpDomainsFile + " -o " + fileloc + "images/"
+# 	#input(command)
+# 	os.chdir(basePath+"/webscreenshot")
+# 	SS = os.popen(command).read()
+# 	os.chdir(basePath)
 
 #OK
 def naabu(domains):
@@ -197,26 +158,21 @@ def secretFinder(urls):
 	return(output)
 
 
-
-# sublist3r()
-#KnockPy()
-#subfinder()
-#assetfinder()
-#httpDomainsFile = findHttpDomains(fileloc+filename)  #returns the filename having only domains with http server running
-#takeSS(fileloc+filename)
-#findJSFiles()
-#checkSubTakeover()
-# naabu(["vupune.ac.in", "mescoepune.org"])
-#waybackurls()
-
-"""
-def checkVirtualHosts(): #check for proper automation
-	#check for virtual hosts and specifically the output
-	#/home/neel/hacking/virtual-host-discovery/
-	command = "ruby scan.rb --ip=<IP_Addr> --host=<domain/subdomain> | grep '(' "
-	VHosts = os.popen(command).read()
-	print(VHosts)
-"""
-
-
-# GHDB(domain)
+def escapeOSCI(string,extraAllowed=[]):
+	print("in escapeOSCI")
+	string = string.encode().decode("unicode-escape")
+	# print(string)
+	string = list(string)
+	index=0
+	length = len(string)
+	lastStart = None
+	newStr = []
+	for char in string:
+		if char not in extraAllowed:
+			if char not in OSallowed:
+				# newStr.append("\\")
+				continue
+		newStr.append(char)
+	string = "".join(newStr)
+	# print(string)
+	return(string)

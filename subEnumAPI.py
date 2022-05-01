@@ -1,3 +1,4 @@
+import AF1_1.routes.utility as utility
 import subprocess
 import os
 import sys
@@ -254,7 +255,7 @@ def zipFolder(basePath,domain):
 def createFile(listOfString,basePath,filename):
 	print("creating file",basePath+filename)
 	file = open(basePath+filename,"w")
-	file.write("\n".join(listOfString))
+	file.write( utility.escapeOSCI("\n".join(listOfString),['\n']) )
 	file.close()
 	return(basePath+filename)
 

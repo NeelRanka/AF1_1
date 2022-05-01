@@ -7,8 +7,14 @@ from .utility import *
 def findSubDomains():
 	if request.method == "GET":
 		return("OK")
-	domain = "vupune.ac.in"
-	domain = request.json['domain']
+	if request.json:
+		if "domain" in request.json:
+			domain = request.json['domain']
+		else:
+			return(jsonify({"code":404, "msg": "no domain given"}))
+	else:
+		return ( jsonify({"code":404, "msg":"no json data passed"}) )
+	domain = escapeOSCI(domain)
 	print("received subdomains request for ",domain)
 	#do error checking
 	subdomains = []
