@@ -180,6 +180,7 @@ def detectWAF(httpDomainsFile,basePath):
 	print(command)
 	op = os.popen(command).read()
 
+#-----------------------------------------------------------------------------------------------------
 
 
 def detectTechnologies(httpDomainsFile,basePath):
@@ -190,6 +191,19 @@ def detectTechnologies(httpDomainsFile,basePath):
 		command = cmd.format(httpDomain,basePath,"_".join( httpDomain.strip("\n").split("/") ))
 		print(command)
 		op = os.popen(command).read()
+
+
+#-----------------------------------------------------------------------------------------------------
+
+def takeSS(httpDomainsFile,basePath):
+	os.mkdir(basePath+"images/")
+	imgPath = basePath+"images/"
+	oriCmd = "screenshoteer --url '{}' --file '{}{}.png' "
+	with open(httpDomainsFile) as file:
+		for line in file:
+			url = line.strip("\n")
+			cmd = oriCmd.format( url, imgPath, "_".join(url.split("/")) )
+			op = os.popen(cmd).read()
 
 
 #-----------------------------------------------------------------------------------------------------
@@ -223,7 +237,9 @@ def completeProcess(domain=None,todo=None,subDomains=None,httpDomains=None):
 			if "detectTechnology" in todo:
 				print("trying technology detection")
 				detectTechnologies(httpDomainsFile,basePath)
-
+			if "takeSS" in todo:
+				print("Taking Screnshots")
+				takeSS(httpDomainsFile,basePath)
 	
 	#now zip the particular folder and send it to the user
 	zipFolder(basePath,domain)
